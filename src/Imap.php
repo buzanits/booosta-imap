@@ -18,6 +18,8 @@ class Imap extends \booosta\base\Module
 
   public function __construct($server, $user, $password, $options = false)
   {
+    if(!is_callable("imap_open")) $this->raise_error('IMAP support in PHP seems to be missing');
+
     parent::__construct();
 
     if(is_bool($options)) $this->raise_error = $options;
@@ -123,17 +125,17 @@ class mail_message
 
   public function __construct($sender = null, $recipient = null, $subject = null, $rawtext = null, $dtime = null)
   {
-    $this->sender = $sender;
-    $this->recipient = $recipient;
-    $this->subject = $subject;
+    $this->sender = \mb_decode_mimeheader($sender);
+    $this->recipient = \mb_decode_mimeheader($recipient);
+    $this->subject = \mb_decode_mimeheader($subject);
     $this->rawtext = $rawtext;
     $this->dtime = $dtime;
   }
 
-  public function set_sender($val) { $this->sender = $val; }
-  public function set_recepient($val) { $this->recipient = $val; }
-  public function set_recipient($val) { $this->recipient = $val; }
-  public function set_subject($val) { $this->subject = $val; }
+  public function set_sender($val) { $this->sender = \mb_decode_mimeheader($val); }
+  public function set_recepient($val) { $this->recipient = \mb_decode_mimeheader($val); }
+  public function set_recipient($val) { $this->recipient = \mb_decode_mimeheader($val); }
+  public function set_subject($val) { $this->subject = \mb_decode_mimeheader($val); }
   public function set_rawtext($val) { $this->rawtext = $val; }
   public function set_text($val) { $this->rawtext = $val; }
 
