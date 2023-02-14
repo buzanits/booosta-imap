@@ -59,11 +59,13 @@ class Imap extends \booosta\base\Module
   public function __destruct()
   {
     if($this->dirty) $this->expunge();
-    @imap_close($this->mbox);
+    if($this->mbox !== false) @imap_close($this->mbox);
   }
 
   public function get_mail_message($num)
   {
+    if(!is_object($this->mbox)) return null;
+
     $info = \imap_headerinfo($this->mbox, $num);
     $sender = $info->fromaddress;
     $recipient = $info->toaddress;
@@ -84,6 +86,8 @@ class Imap extends \booosta\base\Module
   
   public function move_mail($num, $destination) 
   { 
+    if(!is_object($this->mbox)) return null;
+
     $this->dirty = true;
     return \imap_mail_move($this->mbox, $num, $destination); 
   }
@@ -98,18 +102,26 @@ class Imap extends \booosta\base\Module
 
   public function create_folder($name)
   {
+    if(!is_object($this->mbox)) return null;
+
     return \imap_createmailbox($this->mbox, "$this->serverstr/$name");
   }
 
   public function delete_message($num, $expunge = true)
   {
+    if(!is_object($this->mbox)) return null;
+
     \imap_delete($this->mbox, $num);
     if($expunge) \imap_expunge($this->mbox);
+    return true;
   }
 
   public function get_size($bytes = false)
   {
+    if(!is_object($this->mbox)) return null;
+
     $info = \imap_get_quotaroot($this->mbox, 'INBOX');
+
     #\booosta\debug($info);
     $kilobytes = $info['STORAGE']['usage'];
 
