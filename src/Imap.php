@@ -92,6 +92,11 @@ class Imap extends \booosta\base\Module
     return \imap_mail_move($this->mbox, $num, $destination); 
   }
 
+  public function delete_mail($num)
+  {
+    $this->dirty = true;
+    return \imap_delete($this->mbox, $num);
+  }
 
   public function get_last_message($delete = false)
   {
