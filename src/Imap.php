@@ -18,13 +18,11 @@ class Imap extends \booosta\base\Module
 
   public function __construct($server, $user, $password, $options = false)
   {
-    if(!is_callable("imap_open")) $this->raise_error('IMAP support in PHP seems to be missing');
-
     parent::__construct();
+    if(!is_callable("imap_open") && is_callable([$this->topobj, 'raise_error'])) $this->topobj->raise_error('IMAP support in PHP seems to be missing');
 
     if(is_bool($options)) $this->raise_error = $options;
     else $this->raise_error = $options['raise_error'] ? true : false;
-
 
     if($options['tls']):
       if(!strstr($server, ':')) $server .= ':993';
