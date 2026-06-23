@@ -20,6 +20,7 @@ You also can use this module in your standalone PHP scripts. In both cases you i
 ```
 composer require booosta/imap
 ```
+Your PHP has to support the IMAP functionallity. It must have been compiled with IMAP support or load the module.
 
 ## Usage in the Booosta framework
 
