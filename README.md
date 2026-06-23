@@ -18,7 +18,7 @@ Booosta is installed, you can install this module.
 You also can use this module in your standalone PHP scripts. In both cases you install it with:
 
 ```
-composer require booosta/booosta-imap
+composer require booosta/imap
 ```
 
 ## Usage in the Booosta framework
