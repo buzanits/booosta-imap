@@ -115,7 +115,10 @@ class Imap extends \booosta\base\Module
     if(!is_object($this->mbox)) return null;
 
     \imap_delete($this->mbox, $num);
+
     if($expunge) \imap_expunge($this->mbox);
+    else $this->dirty = true;
+
     return true;
   }
 
